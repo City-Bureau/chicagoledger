@@ -1,4 +1,5 @@
 from decimal import Decimal
+from operator import attrgetter
 
 from boto3.dynamodb.conditions import Key
 from requests import Request
@@ -44,7 +45,7 @@ class Bills:
             for item in response["Items"]:
                 bill = BillMapper().from_db(item)
                 bills.append(bill)
-        return bills
+        return sorted(bills, key=attrgetter('date'))
 
     def get(self, bill):
         response = self.bills.get_item(

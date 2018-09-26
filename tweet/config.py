@@ -1,3 +1,4 @@
+import os
 from collections import namedtuple
 
 from dateutil.utils import today
@@ -16,10 +17,12 @@ QUERY = create_query(
     person=PERSON, description=ACTIONS
 )
 
+TERM_START_DATE = '2011-01-01'
+
 # AWS params
 # .aws/config to use
 # profile is expected to have region
-AWS_PROFILE_NAME = 'default'
+AWS_PROFILE_NAME = os.getenv('AWS_DEFAULT_PROFILE', 'default')
 AWS_SECRETSMANAGER_SECRET_NAME = 'Twitter'
 
 APP_CONFIG = AppConfig(AWS_PROFILE_NAME, AWS_SECRETSMANAGER_SECRET_NAME, QUERY)

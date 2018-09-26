@@ -7,7 +7,7 @@ from twython import Twython, TwythonError
 
 TWEET_TEMPLATE = '{title} {identifier} {url}'
 REPLY_TEMPLATE = '@{username} {tweet}'
-NEW_THREAD_TEMPLATE = """Want to know what changes Rahm Emanuel wants to see in Chicago? Here’s each piece of legislation introduced by Chicago’s mayor at this month’s City Council session, {date}.
+NEW_THREAD_TEMPLATE = """Want to know what changes Rahm Emanuel wants to see in Chicago? Here’s each piece of legislation introduced by Chicago’s mayor at the {date} City Council session.
 
 I’m a public service bot from @city_bureau @CHIdocumenters
 
