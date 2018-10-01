@@ -45,6 +45,8 @@ def tweet(bills, twitter_bot):
             # TODO and remove this step
             prev_tweets[bill.date] = prev_tweet_id
         prev_tweets = continue_thread(bill, bills, prev_tweet_id, prev_tweets, twitter_bot)
+        if prev_tweets is None:
+            return
     log.setLevel(logging.WARNING)
 
 
@@ -78,6 +80,9 @@ def continue_thread(bill, bills, prev_tweet_id, prev_tweets, twitter_bot):
     except TwythonError as e:
         log.error('handler.continue_thread: {} error: {}'.format(e.error_code, e.msg))
         log.error(bill)
+        if str(e.error_code) in ['403', '420', '429']:
+            log.error('Stopping due to rate limits being hit')
+            return None
     else:
         bill.tweet_id = response['id_str']
         bills.insert(bill)
