@@ -20,7 +20,7 @@ def load_archive():
                 r['identifier'],
                 r['title'].strip(),
                 r['classification'],
-                r['ocd_id'],
+                r['ocd_id'] or 'NA',
                 r['date'],
             )
             for r in reader
