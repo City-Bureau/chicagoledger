@@ -50,17 +50,30 @@ class BillsAPI:
     def get_bills(self, bills_request_params):
         bills = []
         for page in self._page_bills_results(bills_request_params):
-            bill = self.parse_bills(page)
+            bill = self.parse_bills(page, bills_request_params.person_id)
             bills.extend(bill)
         return bills
 
-    @staticmethod
-    def parse_bills(bills_json):
+    def parse_bills(self, bills_json, person_id):
         bills = []
         for bill in bills_json['results']:
-            b = Bill(bill['identifier'], bill['title'].strip(), bill['classification'], bill['id'])
-            bills.append(b)
+            if self.is_person_primary_sponsor(bill, person_id):
+                b = Bill(
+                    bill['identifier'],
+                    bill['title'].strip(),
+                    bill['classification'],
+                    bill['id'],
+                )
+                bills.append(b)
         return bills
+
+    @staticmethod
+    def is_person_primary_sponsor(bill, person_id):
+        """Return true if bill includes person ID as a primary sponsor"""
+        return len([
+            sponsor for sponsor in bill['sponsorships']
+            if sponsor['primary'] and sponsor['entity_id'] == person_id
+        ]) > 0
 
 
 # TODO Not sure this query does quite what we want

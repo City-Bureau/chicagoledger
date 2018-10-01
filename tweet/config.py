@@ -17,8 +17,6 @@ QUERY = create_query(
     person=PERSON, description=ACTIONS
 )
 
-TERM_START_DATE = '2011-01-01'
-
 # AWS params
 # .aws/config to use
 # profile is expected to have region
