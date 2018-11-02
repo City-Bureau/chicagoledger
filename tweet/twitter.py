@@ -7,16 +7,19 @@ from twython import Twython, TwythonError
 
 TWEET_TEMPLATE = '{title} {identifier} {url}'
 REPLY_TEMPLATE = '@{username} {tweet}'
-NEW_THREAD_TEMPLATE = """Want to know what changes Rahm Emanuel wants to see in Chicago? Here’s each piece of legislation introduced by Chicago’s mayor at the {date} City Council session.
-
-I’m a public service bot from @city_bureau @CHIdocumenters
-
-Links download full ordinance text!"""
+NEW_THREAD_TEMPLATE = (
+    'Want to know what changes Rahm Emanuel wants to see in Chicago? '
+    'Here’s each piece of legislation introduced by Chicago’s mayor at '
+    'the {date} City Council session.\n\n'
+    'Links download full ordinance text!'
+)
 
 log = logging.getLogger(__name__)
 
-TwitterCredentials = namedtuple('TwitterCredentials',
-                                ['consumer_key', 'consumer_secret', 'access_token', 'access_secret'])
+TwitterCredentials = namedtuple(
+    'TwitterCredentials',
+    ['consumer_key', 'consumer_secret', 'access_token', 'access_secret']
+)
 # https://developer.twitter.com/en/docs/developer-utilities/configuration/api-reference/get-help-configuration
 TWITTER_MAX_CHARS = 280
 SHORT_URL_LENGTH = 23
@@ -72,7 +75,9 @@ class TwitterBot:
             # TODO w/ auto_populate_reply_metadata=True param, but
             # TODO threads don't render properly for some reason when using
             # TODO this param. Investigate why at some point.
-            text_after_url_shortening = REPLY_TEMPLATE.format(username=reply_to, tweet=text_after_url_shortening)
+            text_after_url_shortening = REPLY_TEMPLATE.format(
+                username=reply_to, tweet=text_after_url_shortening
+            )
         chars_over_max = len(text_after_url_shortening) - TWITTER_MAX_CHARS
         if chars_over_max > 0:
             bill_truncated_title = copy(bill)
@@ -105,7 +110,9 @@ class TwitterClient:
 
     def update_status(self, status, in_reply_to_status_id=None):
         if in_reply_to_status_id is None:
-            return self.twitter_client.update_status(status=status, tweet_mode='extended')
+            return self.twitter_client.update_status(
+                status=status, tweet_mode='extended'
+            )
         return self.twitter_client.update_status(
             status=status,
             in_reply_to_status_id=in_reply_to_status_id,
